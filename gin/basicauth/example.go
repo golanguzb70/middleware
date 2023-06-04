@@ -1,18 +1,17 @@
-package example
+package basicauth
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golanguzb70/middleware/gin/basicauth"
 )
 
 func RestrictAllRouter() *gin.Engine {
 	router := gin.Default()
 
 	// This configuration checks for all incoming requests for authentication
-	cfg := basicauth.Config{
-		Users: []basicauth.User{
+	cfg := Config{
+		Users: []User{
 			{
 				UserName: "UserName1",
 				Password: "Password1",
@@ -41,8 +40,8 @@ func RestrictAllRouter() *gin.Engine {
 func RestrictByMethodRouter() *gin.Engine {
 	router := gin.Default()
 
-	cfg := basicauth.Config{
-		Users: []basicauth.User{
+	cfg := Config{
+		Users: []User{
 			{
 				UserName: "UserName1",
 				Password: "Password1",
@@ -82,8 +81,8 @@ func RestrictByMethodRouter() *gin.Engine {
 func RestrictByUrlRouter() *gin.Engine {
 	router := gin.Default()
 
-	cfg := basicauth.Config{
-		Users: []basicauth.User{
+	cfg := Config{
+		Users: []User{
 			{
 				UserName: "UserName1",
 				Password: "Password1",
