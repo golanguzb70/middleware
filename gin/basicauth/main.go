@@ -29,6 +29,7 @@ type Auth interface {
 	Middleware(c *gin.Context)
 }
 
+// turning struct into a interface
 func New(conf *Config) Auth {
 	return conf
 }
