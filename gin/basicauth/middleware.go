@@ -2,6 +2,7 @@ package basicauth
 
 import (
 	"encoding/base64"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -16,6 +17,9 @@ func (cfg *Config) Middleware(ctx *gin.Context) {
 		method       = ctx.Request.Method
 		authHeader   = ctx.GetHeader("Authorization")
 	)
+	fmt.Println("URL: ", url)
+	fmt.Println("Method: ", method)
+
 	if strings.Contains(strings.Join(cfg.RestrictedMethods, ","), method) {
 		authRequired = true
 	}
