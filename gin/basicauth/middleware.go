@@ -25,9 +25,11 @@ func (cfg *Config) Middleware(ctx *gin.Context) {
 			if strings.Contains(e, "*") && strings.Contains(url, strings.TrimSuffix(e, "/*")) {
 				authRequired = true
 				break
-			} else if strings.Contains(e, "*") && e == string(url[:strings.LastIndex(url, "/")]) {
+			} else if strings.Contains(e, "{") && e == string(url[:strings.LastIndex(url, "/")]) {
 				authRequired = true
 				break
+			} else if e == url {
+				authRequired = true
 			}
 		}
 	}
