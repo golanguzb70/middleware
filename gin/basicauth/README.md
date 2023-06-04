@@ -6,7 +6,7 @@ Writing basic authentication middleware by yourself for your every project takes
 
 
 # Examples
-Find example source code [here](https://github.com/golanguzb70/middleware/blob/main/gin/basicauth/example/example.go)
+Find example source code [here](https://github.com/golanguzb70/middleware/blob/main/gin/basicauth/example.go)
 
 ## Require Authentication for all requests
 To configure your middleware to require authentication from all requests use the code below.
