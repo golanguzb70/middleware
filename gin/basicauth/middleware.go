@@ -17,9 +17,7 @@ func (cfg *Config) Middleware(ctx *gin.Context) {
 		method       = ctx.Request.Method
 		authHeader   = ctx.GetHeader("Authorization")
 	)
-	fmt.Println("URL: ", url)
-	fmt.Println("Method: ", method)
-
+	
 	if strings.Contains(strings.Join(cfg.RestrictedMethods, ","), method) {
 		authRequired = true
 	}
@@ -29,7 +27,7 @@ func (cfg *Config) Middleware(ctx *gin.Context) {
 			if strings.Contains(e, "*") && strings.Contains(url, strings.TrimSuffix(e, "/*")) {
 				authRequired = true
 				break
-			} else if strings.Contains(e, "{") && e == string(url[:strings.LastIndex(url, "/")]) {
+			} else if strings.Contains(e, "{") && string(e[:strings.LastIndex(e, "/")]) == string(url[:strings.LastIndex(url, "/")]) {
 				authRequired = true
 				break
 			} else if e == url {
