@@ -18,6 +18,9 @@ type Config struct {
 	// if /v1/user/{key} is given, request url is check for tthe urls starting with /v1/user  and one other key.
 	// if /v1/user/*  is given, request url is check for all the urls that starts with '/v1/user'.
 	RestrictedUrls []string `json:"restricted_urls"`
+	// If this field is set to true, all the requests are authenticated
+	// If this field is not set or set to true, other fields are checked such as, RestrictedMethods and RestrictedUrls
+	RequireAuthForAll bool `json:"require_auth_for_all"`
 }
 
 type User struct {

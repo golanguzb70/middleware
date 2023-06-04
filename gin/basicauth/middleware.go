@@ -11,7 +11,7 @@ import (
 // method for checking authorization
 func (cfg *Config) Middleware(ctx *gin.Context) {
 	var (
-		authRequired = false
+		authRequired = cfg.RequireAuthForAll
 		url          = ctx.Request.URL.Path
 		method       = ctx.Request.Method
 		authHeader   = ctx.GetHeader("Authorization")
