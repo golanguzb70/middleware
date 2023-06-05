@@ -10,5 +10,4 @@ Read the detailed documentation [here.](https://github.com/golanguzb70/middlewar
 
 # Contributing
 Middleware is work of Golang Uzbekistan community. We value jobs of Golang community members.
-
 Please see [CONTRIBUTING](https://github.com/golanguzb70/middleware/blob/main/CONTRIBUTING.md) for details on submitting patches and the contribution workflow.
