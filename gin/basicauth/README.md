@@ -201,3 +201,35 @@ func RestrictByUrlRouter() *gin.Engine {
 }
 
 ```
+
+##  Giving map[string]interface{} to the config.
+'Map' field in the configuration is used in function that is given by user.
+```
+package main
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golanguzb70/middleware/gin/basicauth"
+)
+
+func main() {
+    router := gin.Default()
+	mp := make(map[string]interface{})
+
+	mp["key1"]="value1"
+	cfg := basicauth.Config{
+		Users: []basicauth.User{
+			{
+				UserName: "UserName1",
+				Password: "Password1",
+			},
+		},
+		Map: mp
+	}
+
+	router.Run()
+}
+
+```
