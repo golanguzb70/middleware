@@ -21,6 +21,8 @@ type Config struct {
 	// If this field is set to true, all the requests are authenticated
 	// If this field is not set or set to true, other fields are checked such as, RestrictedMethods and RestrictedUrls
 	RequireAuthForAll bool `json:"require_auth_for_all"`
+	// Using this field any data can be given to the function
+	Map               map[string]interface{}
 }
 
 type User struct {
