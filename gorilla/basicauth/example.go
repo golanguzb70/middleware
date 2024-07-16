@@ -13,8 +13,8 @@ func RestrictAllRouter() *mux.Router {
 	config := Config{
 		Users: []User{
 			{
-				UserName: "user1",
-				Password: "password1",
+				UserName: "username",
+				Password: "password",
 			},
 		},
 		RequireAuthForAll: true,
@@ -43,11 +43,11 @@ func RestrictByUrlRouter() *mux.Router {
 	config := Config{
 		Users: []User{
 			{
-				UserName: "user1",
-				Password: "password1",
+				UserName: "username",
+				Password: "password",
 			},
 		},
-		RestrictedUrls: []string{"/user/create", "/admin/*", "user/{id}"},
+		RestrictedUrls: []string{"/user/create", "/admin/*", "/user/{id}"},
 		UnauthorizedHandler: func(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		},
@@ -59,11 +59,11 @@ func RestrictByUrlRouter() *mux.Router {
 		w.Write([]byte("You have been asked an authentication to see me. Because I am restricted url: /user/create"))
 	}).Methods("POST")
 
-	router.HandleFunc("/user/:id", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("You have been asked an authentication to see me. Because I am restricted url: /user/{id}"))
 	}).Methods("DELETE")
 
-	router.HandleFunc("/user/:id", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("You have been asked an authentication to see me. Because I am restricted url: /user/{id}"))
 	}).Methods("GET")
 
@@ -71,11 +71,11 @@ func RestrictByUrlRouter() *mux.Router {
 		w.Write([]byte("You have been asked an authentication to see me. Because I am restricted url: /admin/*"))
 	}).Methods("POST")
 
-	router.HandleFunc("/admin/:id", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/admin/{id}", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("You have been asked an authentication to see me. Because I am restricted url: /admin/*"))
 	}).Methods("GET")
 
-	router.HandleFunc("/admin/:id", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/admin/{id}", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("You have been asked an authentication to see me. Because I am restricted url: /admin/*"))
 	}).Methods("DELETE")
 
@@ -91,7 +91,7 @@ func RestrictByMethodsRouter() *mux.Router {
 	config := Config{
 		Users: []User{
 			{
-				UserName: "user",
+				UserName: "username",
 				Password: "password",
 			},
 		},
@@ -116,7 +116,7 @@ func RestrictByMethodsRouter() *mux.Router {
 		w.Write([]byte("You have been asked an authentication to see me, because I am DELETE METHOD"))
 	}).Methods("DELETE")
 
-	router.HandleFunc("/user/:id", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/user/{id}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		w.Write([]byte("You can get user with id " + vars["id"] + " without any authentication, because I am GET method which not restricted."))
 	}).Methods("GET")
