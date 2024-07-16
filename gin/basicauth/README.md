@@ -12,7 +12,7 @@ Find example source code [here](https://github.com/golanguzb70/middleware/blob/m
 To configure your middleware to require authentication from all requests use the code below.
 Here `RequireAuthForAll` field of config is set to true.
 
-```
+```go
 package main
 
 import (
@@ -64,7 +64,7 @@ func RestrictAllRouter() *gin.Engine {
 In some projects you need to require authentication for POST, PUT, DELETE, PATCH methods while giving access GET methods without any authorization or authentication.
 This feature is best option to do so. In the example below, only request with POST, PUT, DELETE methods are require to have Authorization. 
 
-```
+```go
 package main
 
 import (
@@ -125,7 +125,7 @@ func RestrictByMethodRouter() *gin.Engine {
 In some projects, there may be a case that only some requests with GET method should require Authorization. 
 For example, /admin/list should require authorization while /user/list should not. In this case, source code below helps you.
 
-```
+```go
 package main
 
 import (
@@ -204,7 +204,7 @@ func RestrictByUrlRouter() *gin.Engine {
 
 ##  Giving map[string]interface{} to the config.
 'Map' field in the configuration is used in function that is given by user.
-```
+```go
 package main
 
 import (

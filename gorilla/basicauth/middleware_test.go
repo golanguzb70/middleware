@@ -12,7 +12,7 @@ func TestRequireAuthorizationAll(t *testing.T) {
 	cfg := Config{
 		Users: []User{
 			{
-				UserName: "user",
+				UserName: "username",
 				Password: "password",
 			},
 		},
@@ -42,7 +42,15 @@ func TestRequireAuthorizationAll(t *testing.T) {
 	wWithAuth := httptest.NewRecorder()
 	router.ServeHTTP(wWithAuth, reqWithAuth)
 
-	// assert.Equal(t, 200, wWithAuth.Result().StatusCode)
+	assert.Equal(t, 200, wWithAuth.Result().StatusCode)
+
+	reqWithAuth = httptest.NewRequest("GET", "/hi", nil)
+	reqWithAuth.Header.Set("Authorization", "Basic "+base64Auth)
+	wWithAuth = httptest.NewRecorder()
+	router.ServeHTTP(wWithAuth, reqWithAuth)
+
+	assert.Equal(t, 200, wWithAuth.Result().StatusCode)
+
 }
 func TestRequireForSpecificMethods(t *testing.T) {
 	cfg := Config{
@@ -76,11 +84,11 @@ func TestRequireForSpecificMethods(t *testing.T) {
 
 	assert.Equal(t, 401, w.Result().StatusCode)
 
-	req = httptest.NewRequest("GET", "/user/10", nil)
+	req = httptest.NewRequest("GET", "/user/12", nil)
 	w = httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
-	assert.Equal(t, 200, w.Result().StatusCode)
+	assert.Equal(t, 401, w.Result().StatusCode)
 
 	// Create a test request with valid authorization header
 	base64Auth := base64.StdEncoding.EncodeToString([]byte(cfg.Users[0].UserName + ":" + cfg.Users[0].Password))
@@ -123,7 +131,7 @@ func TestRequireForSpecificUrls(t *testing.T) {
 			},
 		},
 	}
-	// Set Gin to Test mode
+	// Set Gorilla to Test mode
 
 	// Create a new router
 	router := RestrictByUrlRouter()
@@ -138,7 +146,7 @@ func TestRequireForSpecificUrls(t *testing.T) {
 	router.ServeHTTP(w, req)
 	assert.Equal(t, 401, w.Result().StatusCode)
 
-	req = httptest.NewRequest("GET", "/user/12", nil)
+	req = httptest.NewRequest("GET", "/user/info", nil)
 	w = httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 	assert.Equal(t, 401, w.Result().StatusCode)

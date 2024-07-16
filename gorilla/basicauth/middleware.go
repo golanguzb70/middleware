@@ -7,6 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 )
+
 // method for checking authorization
 func Middleware(cfg Config) mux.MiddlewareFunc {
 	return func(next http.Handler) http.Handler {
@@ -37,40 +38,47 @@ func Middleware(cfg Config) mux.MiddlewareFunc {
 			}
 
 			if authRequired {
-				for _, u := range cfg.Users {
-					if authHeader == "" {
-						w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
-						cfg.UnauthorizedHandler(w, r)
-						return
-					}
+				if authHeader == "" {
+					w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
+					cfg.UnauthorizedHandler(w, r)
+					return
+				}
 
-					credentials := strings.SplitN(authHeader, " ", 2)
-					if len(credentials) != 2 {
-						w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
-						cfg.UnauthorizedHandler(w, r)
-						return
-					}
+				credentials := strings.SplitN(authHeader, " ", 2)
+				if len(credentials) != 2 {
+					w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
+					cfg.UnauthorizedHandler(w, r)
+					return
+				}
 
-					decodedCredentials, err := base64.StdEncoding.DecodeString(credentials[1])
-					if err != nil {
-						w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
-						cfg.UnauthorizedHandler(w, r)
-						return
-					}
+				decodedCredentials, err := base64.StdEncoding.DecodeString(credentials[1])
+				if err != nil {
+					w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
+					cfg.UnauthorizedHandler(w, r)
+					return
+				}
+				credentialsPair := strings.SplitN(string(decodedCredentials), ":", 2)
+				if len(credentialsPair) != 2 {
+					w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
+					cfg.UnauthorizedHandler(w, r)
+					return
+				}
 
-					credentialsPair := strings.SplitN(string(decodedCredentials), ":", 2)
-					if len(credentialsPair) != 2 {
-						w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
-						cfg.UnauthorizedHandler(w, r)
-						return
-					}
-
-					if credentialsPair[0] != u.UserName || credentialsPair[1] != u.Password {
-						w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
-						cfg.UnauthorizedHandler(w, r)
-						return
+				authorized := false
+				
+				for i := 0; i < len(cfg.Users); i++ {
+					if credentialsPair[0] == cfg.Users[i].UserName && credentialsPair[1] == cfg.Users[i].Password {
+						authorized = true
+						break
 					}
 				}
+
+				if !authorized {
+					w.Header().Set("WWW-Authenticate", "Basic realm=Authorization Required")
+					cfg.UnauthorizedHandler(w, r)
+					return
+				}
+
 			}
 
 			// Call the next handler in the chain
